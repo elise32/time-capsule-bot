@@ -20,7 +20,7 @@ target_holder = TargetHolder()
 
 @client.event
 async def on_ready() -> None:
-    # await client.tree.sync()
+    await client.tree.sync()
     print(f'Logged in as {client.user}')
 
 @client.event
