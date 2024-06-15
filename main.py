@@ -66,7 +66,7 @@ async def info(interaction: Interaction) -> None:
 @app_commands.describe(channel_id = "The ID of the channel")
 async def set_channel(interaction: Interaction, channel_id: str) -> None:
     await interaction.response.send_message(content=f'Fetching...', ephemeral=True)
-    result = await fetch_channel(channel_id, guild_id=interaction.guild_id)
+    result = await fetch_channel(channel_id, interaction.guild_id)
     if result is None:
         await interaction.followup.send(content=f'Set channel failed, keeping old value of {target_holder.channel}', ephemeral=True)
     else:
@@ -76,15 +76,13 @@ async def set_channel(interaction: Interaction, channel_id: str) -> None:
 @app_commands.describe(role_id = "The ID of the role")
 async def set_role(interaction: Interaction, role_id: str) -> None:
     await interaction.response.send_message(content=f'Fetching...', ephemeral=True)
-    result = await fetch_role(role_id, guild_id=interaction.guild_id)
+    result = await fetch_role(role_id, interaction.guild_id)
     if result is None:
         await interaction.followup.send(content=f'Set role failed, keeping old value of {target_holder.role}', ephemeral=True)
     else:
         await interaction.followup.send(content=f'Set role to {result.name} - {result.id} {result.mention}', ephemeral=True)
 
-TRANSPLACE_GUILD_ID = "959551566388547676"
-
-async def fetch_role(role_id: str, guild_id=TRANSPLACE_GUILD_ID) -> Role | None:
+async def fetch_role(role_id: str, guild_id) -> Role | None:
     guild = await client.fetch_guild(guild_id)
     roles = await guild.fetch_roles()
     target_role = next((role for role in roles if str(role.id) == role_id), None)
@@ -93,7 +91,7 @@ async def fetch_role(role_id: str, guild_id=TRANSPLACE_GUILD_ID) -> Role | None:
         return target_role
     return None
 
-async def fetch_channel(channel_id: str, guild_id=TRANSPLACE_GUILD_ID) -> TextChannel | Thread | None:
+async def fetch_channel(channel_id: str, guild_id) -> TextChannel | Thread | None:
     guild = await client.fetch_guild(guild_id)
     try:
         target_channel = await guild.fetch_channel(channel_id)
