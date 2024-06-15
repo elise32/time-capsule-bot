@@ -101,7 +101,6 @@ async def fetch_channel(channel_id: str, guild_id) -> TextChannel | Thread | Non
         return None
 
 def main() -> None:
-    
     client.run(token=TOKEN)
 
 if __name__ == '__main__':
